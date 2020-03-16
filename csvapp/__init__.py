@@ -11,7 +11,8 @@ from csvapp.views.views import views_blueprint
 
 app = Flask(
     __name__,
-    template_folder='./templates'
+    template_folder='./templates',
+    static_folder='../dist'
 )
 
 app_settings = os.getenv(

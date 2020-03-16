@@ -1,1 +1,10 @@
 {% extends "base.jinja2" %}
+
+{% block content %}
+    <div id="main"> </div>
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="{{url_for('static', filename='bundle.js')}}"></script>
+{% endblock %}
+
