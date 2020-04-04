@@ -1,9 +1,11 @@
-import * as React from "react";
+import React, { useState } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import FileTable from "./components/fileTable";
+import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
+import FileTable from "./components/fileTable";
+import FileUpload from "./components/fileUpload";
 
 const useStyles = makeStyles({
     main: {
@@ -14,6 +16,11 @@ const useStyles = makeStyles({
 
 export default ({ data }) => {
     const classes = useStyles();
+    const [files] = useState(data);
+
+    const onFileSelect = (event) => {
+        console.log(event.target.files[0]);
+    };
 
     return (
         <React.Fragment>
@@ -22,7 +29,10 @@ export default ({ data }) => {
                 <Typography variant="h3" gutterBottom>
                     CSV App
                 </Typography>
-                <FileTable data={data} />
+                <FileTable files={files} />
+                <Box display="flex" flexDirection="row-reverse">
+                    <FileUpload onFileSelect={onFileSelect} />
+                </Box>
             </Container>
         </React.Fragment>
     );

@@ -7,8 +7,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-export default ({ data }) => {
-    const fileData = data.map((row) => (
+export default ({ files }) => {
+    const fileData = files.map((row) => (
         <TableRow key={row.name}>
             <TableCell component="th" scope="row">
                 {row.name}
