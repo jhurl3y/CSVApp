@@ -18,6 +18,7 @@ const useStyles = makeStyles({
 export default ({ data }) => {
     const classes = useStyles();
     const [files, setFiles] = useState(data);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const onFileSelect = (event) => {
         const file = event.target.files[0];
@@ -33,8 +34,9 @@ export default ({ data }) => {
                         ...prevFiles,
                         { name, size, modified },
                     ]);
+                    setErrorMessage(null);
                 } else {
-                    console.log(resp.message);
+                    setErrorMessage(resp.message);
                 }
             })
             .catch((error) => {
@@ -51,7 +53,10 @@ export default ({ data }) => {
                 </Typography>
                 <FileTable files={files} />
                 <Box display="flex" flexDirection="row-reverse">
-                    <FileUpload onFileSelect={onFileSelect} />
+                    <FileUpload
+                        onFileSelect={onFileSelect}
+                        error={errorMessage}
+                    />
                 </Box>
             </Container>
         </React.Fragment>
