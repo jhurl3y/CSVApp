@@ -8,7 +8,7 @@ from csvapp.views.views import views_blueprint
 ################
 #### config ####
 ################
-
+UPLOAD_FOLDER = 'uploads/csv'
 app = Flask(
     __name__,
     template_folder='./templates',
@@ -18,6 +18,7 @@ app = Flask(
 app_settings = os.getenv(
     'APP_SETTINGS', 'csvapp.config.DevelopmentConfig')
 app.config.from_object(app_settings)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
 ###################

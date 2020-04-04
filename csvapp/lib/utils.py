@@ -1,4 +1,5 @@
 import os
+from flask import current_app as app
 from datetime import datetime
 
 
@@ -8,22 +9,75 @@ def get_file_data(dir_str, suffix=".csv"):
 
     for file in os.listdir(directory):
         path = os.path.join(directory, file)
-
-        # The data to include:
-        # name, size (kB), last modified
         name = os.fsdecode(file)
-        size = os.path.getsize(path)
-        size_str = '{} kB'.format(size/1000)
-        modified_unix = os.path.getmtime(path)
-        modified_str = datetime.fromtimestamp(
-            modified_unix).strftime("%Y-%m-%d %H:%M:%SZ")
 
         # Only include files with suffix
         if name.endswith(suffix):
-            csv_data.append({
-                'name': name,
-                'size': size_str,
-                'modified': modified_str
-            })
+            csv_data.append(
+                _build_file_info(
+                    name=name,
+                    size=_get_file_size(path),
+                    modified=_get_file_last_modified(path)
+                )
+            )
 
     return csv_data
+
+
+def save_file(file, directory):
+    # Get all files uploaded
+    files = {os.fsdecode(f) for f in os.listdir(directory)}
+    filename = file.filename
+
+    if filename in files:
+        raise FileExistsError
+
+    # Save the file
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+    # Return the file info
+    path = os.path.join(directory, filename)
+    return _build_file_info(
+        name=filename,
+        size=_get_file_size(path),
+        modified=_get_file_last_modified(path)
+    )
+
+
+def success_resp(file):
+    return {
+        'status': 'success',
+        'file':
+            _build_file_info(
+                name=file.get('name'),
+                size=file.get('size'),
+                modified=file.get('modified')
+            )
+
+    }
+
+
+def error_resp(message=''):
+    return {
+        'status': 'error',
+        'message': message
+    }
+
+
+def _get_file_size(path):
+    size = os.path.getsize(path)
+    return '{} kB'.format(size/1000)
+
+
+def _get_file_last_modified(path):
+    modified_unix = os.path.getmtime(path)
+    return datetime.fromtimestamp(
+        modified_unix).strftime("%Y-%m-%d %H:%M:%SZ")
+
+
+def _build_file_info(name, size, modified):
+    return {
+        'name': name,
+        'size': size,
+        'modified': modified
+    }
