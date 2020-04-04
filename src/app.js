@@ -6,6 +6,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import FileTable from "./components/fileTable";
 import FileUpload from "./components/fileUpload";
+import { postData } from "./lib/utils";
 
 const useStyles = makeStyles({
     main: {
@@ -19,7 +20,13 @@ export default ({ data }) => {
     const [files] = useState(data);
 
     const onFileSelect = (event) => {
-        console.log(event.target.files[0]);
+        const file = event.target.files[0];
+        const data = new FormData();
+
+        data.append("file", file);
+        postData("http://localhost:3000/upload", data).then((response) =>
+            console.log(response)
+        );
     };
 
     return (
