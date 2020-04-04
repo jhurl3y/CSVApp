@@ -17,16 +17,29 @@ const useStyles = makeStyles({
 
 export default ({ data }) => {
     const classes = useStyles();
-    const [files] = useState(data);
+    const [files, setFiles] = useState(data);
 
     const onFileSelect = (event) => {
         const file = event.target.files[0];
         const data = new FormData();
 
         data.append("file", file);
-        uploadFile("http://localhost:3000/upload", data).then((response) =>
-            console.log(response)
-        );
+        uploadFile("http://localhost:3000/upload", data)
+            .then((resp) => {
+                if (resp.status === 200) {
+                    const { name, size, modified } = resp.file;
+
+                    setFiles((prevFiles) => [
+                        ...prevFiles,
+                        { name, size, modified },
+                    ]);
+                } else {
+                    console.log(resp.message);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (

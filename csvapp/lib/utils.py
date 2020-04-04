@@ -1,5 +1,5 @@
 import os
-from flask import current_app as app
+from flask import current_app as app, jsonify
 from datetime import datetime
 
 
@@ -45,23 +45,27 @@ def save_file(file, directory):
 
 
 def success_resp(file):
-    return {
-        'status': 'success',
+    code = 200
+    response = jsonify({
+        'status': code,
         'file':
             _build_file_info(
                 name=file.get('name'),
                 size=file.get('size'),
                 modified=file.get('modified')
             )
+    })
+    response.status_code = code
+    return response
 
-    }
 
-
-def error_resp(message=''):
-    return {
-        'status': 'error',
-        'message': message
-    }
+def error_resp(status_code, message):
+    response = jsonify({
+        'status': status_code,
+        'message': message,
+    })
+    response.status_code = status_code
+    return response
 
 
 def _get_file_size(path):
