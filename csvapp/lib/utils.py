@@ -1,4 +1,5 @@
 import os
+import csv
 from flask import current_app as app, jsonify
 from datetime import datetime
 
@@ -55,25 +56,27 @@ def delete_file(filename, directory):
     os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
 
-def success_resp_file(file):
+def read_csv_file(filename, directory):
+    # Get all files uploaded
+    files = {os.fsdecode(f) for f in os.listdir(directory)}
+
+    if filename not in files:
+        raise FileExistsError
+
+    # Read the file
+    path = os.path.join(directory, filename)
+    with open(path, newline='') as f:
+        reader = csv.reader(f)
+        data = [tuple(row) for row in reader]
+
+    return data
+
+
+def success_resp(data=None, message=''):
     code = 200
     response = jsonify({
         'status': code,
-        'file':
-            _build_file_info(
-                name=file.get('name'),
-                size=file.get('size'),
-                modified=file.get('modified')
-            )
-    })
-    response.status_code = code
-    return response
-
-
-def success_resp(message):
-    code = 200
-    response = jsonify({
-        'status': code,
+        'data': data,
         'message': message,
     })
     response.status_code = code

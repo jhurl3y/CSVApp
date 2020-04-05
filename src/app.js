@@ -35,7 +35,7 @@ export default ({ data }) => {
         uploadFile(data)
             .then((resp) => {
                 if (resp.status === 200) {
-                    const { name, size, modified } = resp.file;
+                    const { name, size, modified } = resp.data.file;
 
                     setFiles((prevFiles) => [
                         ...prevFiles,
