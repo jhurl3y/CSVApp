@@ -16,4 +16,12 @@ async function deleteFile(filename) {
     return await response.json();
 }
 
-export { uploadFile, deleteFile };
+async function getFileData(filename) {
+    const response = await fetch(`http://localhost:3000/get/${filename}`, {
+        method: "GET",
+    });
+
+    return await response.json();
+}
+
+export { uploadFile, deleteFile, getFileData };
