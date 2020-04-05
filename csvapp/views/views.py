@@ -29,7 +29,11 @@ views_blueprint = Blueprint('views', __name__,)
 
 @views_blueprint.route('/')
 def index():
-    csv_data = get_file_data(app.config['UPLOAD_FOLDER'])
+    try:
+        csv_data = get_file_data(app.config['UPLOAD_FOLDER'])
+    except FileNotFoundError:
+        return render_template('index.jinja2', data=json.dumps([]))
+
     return render_template('index.jinja2', data=json.dumps(csv_data))
 
 
