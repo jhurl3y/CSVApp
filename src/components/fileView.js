@@ -28,8 +28,8 @@ const useStyles = makeStyles({
 const renderFileData = (data) => {
     const fileData = data.map((row, index) => (
         <TableRow key={index}>
-            {row.map((item) => (
-                <TableCell>{item}</TableCell>
+            {row.map((item, index) => (
+                <TableCell key={index}>{item}</TableCell>
             ))}
         </TableRow>
     ));

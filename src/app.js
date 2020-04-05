@@ -15,9 +15,8 @@ const useStyles = makeStyles({
     },
 });
 
-export default ({ data }) => {
+export default ({ files, setFiles }) => {
     const classes = useStyles();
-    const [files, setFiles] = useState(data);
     const [errorMessage, setErrorMessage] = useState(null);
 
     const onFileSelect = (event) => {
