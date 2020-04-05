@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Table from "@material-ui/core/Table";
@@ -9,6 +11,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles } from "@material-ui/core/styles";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { getFileData } from "../lib/utils";
 
 const useStyles = makeStyles({
@@ -34,7 +37,7 @@ const renderFileData = (data) => {
     return fileData;
 };
 
-export default ({ match }) => {
+export default ({ match, history }) => {
     const { filename } = match.params;
     const classes = useStyles();
     const [loaded, setLoaded] = useState(false);
@@ -59,6 +62,11 @@ export default ({ match }) => {
     return (
         <React.Fragment>
             <CssBaseline />
+            <Box display="flex" flexDirection="row">
+                <Button onClick={() => history.goBack()}>
+                    <ArrowBackIcon fontSize="large" />
+                </Button>
+            </Box>
             <Container maxWidth="sm" className={classes.main}>
                 <Typography variant="h4" gutterBottom>
                     {filename}
