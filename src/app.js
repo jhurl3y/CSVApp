@@ -6,7 +6,7 @@ import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import FileTable from "./components/fileTable";
 import FileUpload from "./components/fileUpload";
-import { uploadFile } from "./lib/utils";
+import { uploadFile, deleteFile } from "./lib/utils";
 
 const useStyles = makeStyles({
     main: {
@@ -32,7 +32,7 @@ export default ({ data }) => {
         const data = new FormData();
         data.append("file", file);
 
-        uploadFile("http://localhost:3000/upload", data)
+        uploadFile(data)
             .then((resp) => {
                 if (resp.status === 200) {
                     const { name, size, modified } = resp.file;
@@ -50,6 +50,23 @@ export default ({ data }) => {
                 console.log(error);
             });
     };
+    const onDelete = (filename) => {
+        deleteFile(filename)
+            .then((resp) => {
+                if (resp.status === 200) {
+                    setFiles((prevFiles) =>
+                        prevFiles.filter(({ name }) => name !== filename)
+                    );
+                    setErrorMessage(null);
+                } else {
+                    setErrorMessage(resp.message);
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+    const onView = () => {};
 
     return (
         <React.Fragment>
@@ -58,7 +75,11 @@ export default ({ data }) => {
                 <Typography variant="h3" gutterBottom>
                     CSV App
                 </Typography>
-                <FileTable files={files} />
+                <FileTable
+                    files={files}
+                    handleView={onView}
+                    handleDelete={onDelete}
+                />
                 <Box display="flex" flexDirection="row-reverse">
                     <FileUpload
                         onFileSelect={onFileSelect}

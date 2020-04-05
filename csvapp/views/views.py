@@ -10,7 +10,9 @@ import json
 from csvapp.lib.utils import (
     get_file_data,
     save_file,
+    delete_file,
     success_resp,
+    success_resp_file,
     error_resp
 )
 
@@ -53,4 +55,16 @@ def upload():
     except Exception:
         return error_resp(500, 'Could not save file')
 
-    return success_resp(file)
+    return success_resp_file(file)
+
+
+@views_blueprint.route('/delete/<string:filename>', methods=['DELETE'])
+def delete(filename):
+    try:
+        delete_file(filename, app.config['UPLOAD_FOLDER'])
+    except FileExistsError:
+        return error_resp(400, 'File does not exists')
+    except Exception:
+        return error_resp(500, 'Could not delete file')
+
+    return success_resp('Deleted file')

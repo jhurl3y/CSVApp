@@ -44,7 +44,18 @@ def save_file(file, directory):
     )
 
 
-def success_resp(file):
+def delete_file(filename, directory):
+    # Get all files uploaded
+    files = {os.fsdecode(f) for f in os.listdir(directory)}
+
+    if filename not in files:
+        raise FileExistsError
+
+    # Delete the file
+    os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+def success_resp_file(file):
     code = 200
     response = jsonify({
         'status': code,
@@ -54,6 +65,16 @@ def success_resp(file):
                 size=file.get('size'),
                 modified=file.get('modified')
             )
+    })
+    response.status_code = code
+    return response
+
+
+def success_resp(message):
+    code = 200
+    response = jsonify({
+        'status': code,
+        'message': message,
     })
     response.status_code = code
     return response

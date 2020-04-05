@@ -23,10 +23,8 @@ const useStyles = makeStyles({
     },
 });
 
-export default ({ files }) => {
+export default ({ files, handleView, handleDelete }) => {
     const classes = useStyles();
-    const handleView = () => {};
-    const handleDelete = () => {};
 
     const fileData = files.map((row) => (
         <TableRow key={row.name}>
@@ -41,7 +39,10 @@ export default ({ files }) => {
                 </Button>
             </TableCell>
             <TableCell className={classes.buttonCol} align="right">
-                <Button className={classes.delete} onClick={handleDelete}>
+                <Button
+                    className={classes.delete}
+                    onClick={() => handleDelete(row.name)}
+                >
                     <DeleteIcon />
                 </Button>
             </TableCell>
