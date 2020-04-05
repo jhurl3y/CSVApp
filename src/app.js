@@ -22,9 +22,16 @@ export default ({ data }) => {
 
     const onFileSelect = (event) => {
         const file = event.target.files[0];
-        const data = new FormData();
 
+        // Don't make a request if no file selected
+        if (!file) {
+            setErrorMessage(null);
+            return;
+        }
+
+        const data = new FormData();
         data.append("file", file);
+
         uploadFile("http://localhost:3000/upload", data)
             .then((resp) => {
                 if (resp.status === 200) {
