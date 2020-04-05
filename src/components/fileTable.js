@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -23,7 +24,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default ({ files, handleView, handleDelete }) => {
+export default ({ files, handleDelete }) => {
     const classes = useStyles();
 
     const fileData = files.map((row) => (
@@ -34,9 +35,11 @@ export default ({ files, handleView, handleDelete }) => {
             <TableCell align="right">{row.size}</TableCell>
             <TableCell align="right">{row.modified}</TableCell>
             <TableCell className={classes.buttonCol} align="right">
-                <Button onClick={handleView}>
-                    <VisibilityIcon />
-                </Button>
+                <Link to={`/${row.name}`}>
+                    <Button>
+                        <VisibilityIcon />
+                    </Button>
+                </Link>
             </TableCell>
             <TableCell className={classes.buttonCol} align="right">
                 <Button
