@@ -3,6 +3,7 @@
 import os
 from flask import Flask, render_template
 from csvapp.views.views import views_blueprint
+from flask_cors import CORS
 
 
 ################
@@ -14,6 +15,7 @@ app = Flask(
     template_folder='./templates',
     static_folder='../dist'
 )
+CORS(app)
 
 app_settings = os.getenv(
     'APP_SETTINGS', 'csvapp.config.DevelopmentConfig')
