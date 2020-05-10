@@ -12,6 +12,7 @@ class BaseConfig(object):
 class DevelopmentConfig(BaseConfig):
     """Development configuration."""
     DEBUG = True
+    SEND_FILE_MAX_AGE_DEFAULT = 0
 
 
 class TestingConfig(BaseConfig):

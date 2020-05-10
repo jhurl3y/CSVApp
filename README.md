@@ -9,8 +9,18 @@ This is a simple CSV file uploader/viewer built with Flask and React.
 
 ```
 pip install -e .
+
+# development
 flask run
 
+# production
+export FLASK_ENV=production; flask run
+
 npm i
-npm run dev
+
+# development
+npm start
+
+# production
+npm run build
 ```
