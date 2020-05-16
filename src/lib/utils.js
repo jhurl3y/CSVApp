@@ -1,5 +1,5 @@
 async function uploadFile(data = {}) {
-    const response = await fetch("http://localhost:3000/upload", {
+    const response = await fetch(`http://${window.location.host}/upload`, {
         method: "POST",
         contentType: "multipart/form-data",
         body: data,
@@ -9,17 +9,23 @@ async function uploadFile(data = {}) {
 }
 
 async function deleteFile(filename) {
-    const response = await fetch(`http://localhost:3000/delete/${filename}`, {
-        method: "DELETE",
-    });
+    const response = await fetch(
+        `http://${window.location.host}/delete/${filename}`,
+        {
+            method: "DELETE",
+        }
+    );
 
     return await response.json();
 }
 
 async function getFileData(filename) {
-    const response = await fetch(`http://localhost:3000/get/${filename}`, {
-        method: "GET",
-    });
+    const response = await fetch(
+        `http://${window.location.host}/get/${filename}`,
+        {
+            method: "GET",
+        }
+    );
 
     return await response.json();
 }
