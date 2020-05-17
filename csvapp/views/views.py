@@ -1,12 +1,13 @@
 # project/server/main/views.py
 import os
+import json
 from flask import (
     request,
     render_template,
     Blueprint,
     current_app as app,
+    send_from_directory
 )
-import json
 from csvapp.lib.utils import (
     get_file_data,
     save_file,
@@ -89,3 +90,12 @@ def get(filename):
     return success_resp(data={
         'file': csv_data
     })
+
+
+@views_blueprint.route('/favicon.ico')
+def favicon():
+    return send_from_directory(
+        os.path.join(app.root_path, '..', 'icons'),
+        'favicon.ico',
+        mimetype='image/vnd.microsoft.icon'
+    )
