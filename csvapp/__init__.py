@@ -13,7 +13,7 @@ from flask_cors import CORS
 UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER')
 WEBPACK_MANIFEST = os.environ.get('WEBPACK_MANIFEST')
 
-app = Flask(
+application = Flask(
     __name__,
     template_folder='./templates',
     static_folder='../dist'
@@ -23,8 +23,8 @@ config = 'csvapp.config.{}Config'.format(
     os.environ['FLASK_ENV'].title()
 )
 app_settings = os.getenv('APP_SETTINGS', config)
-app.config.from_object(app_settings)
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+application.config.from_object(app_settings)
+application.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # Create uploads folder
 if not os.path.exists(UPLOAD_FOLDER):
@@ -32,14 +32,14 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 # Set the webpack built js file
 with open(WEBPACK_MANIFEST) as manifest:
-    app.jinja_env.globals['WEBPACK_APP'] = json.load(
+    application.jinja_env.globals['WEBPACK_APP'] = json.load(
         manifest).get(os.environ.get('WEBPACK_APP'))
 
 # Enable cross-origin AJAX requests
-CORS(app)
+CORS(application)
 
 ###################
 ### blueprints ####
 ###################
 
-app.register_blueprint(views_blueprint)
+application.register_blueprint(views_blueprint)
