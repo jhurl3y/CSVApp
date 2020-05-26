@@ -1,5 +1,5 @@
 async function uploadFile(data = {}) {
-    const response = await fetch(`http://${window.location.host}/upload`, {
+    const response = await fetch(`${window.location.origin}/upload`, {
         method: "POST",
         contentType: "multipart/form-data",
         body: data,
@@ -10,7 +10,7 @@ async function uploadFile(data = {}) {
 
 async function deleteFile(filename) {
     const response = await fetch(
-        `http://${window.location.host}/delete/${filename}`,
+        `${window.location.origin}/delete/${filename}`,
         {
             method: "DELETE",
         }
@@ -20,12 +20,9 @@ async function deleteFile(filename) {
 }
 
 async function getFileData(filename) {
-    const response = await fetch(
-        `http://${window.location.host}/get/${filename}`,
-        {
-            method: "GET",
-        }
-    );
+    const response = await fetch(`${window.location.origin}/get/${filename}`, {
+        method: "GET",
+    });
 
     return await response.json();
 }
