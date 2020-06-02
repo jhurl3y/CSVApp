@@ -1,0 +1,21 @@
+version: "3"
+services:
+    server:
+        build:
+            context: ..
+            dockerfile: docker/server/Dockerfile
+        ports:
+            - 3000:3000
+        volumes:
+            - static-content:/usr/src/app/dist
+            - "../:/usr/src/app"
+    frontend:
+        build:
+            context: ..
+            dockerfile: docker/frontend/Dockerfile
+        volumes:
+            - static-content:/usr/src/app/dist
+            - "../src:/usr/src/app/src"
+
+volumes:
+    static-content:
